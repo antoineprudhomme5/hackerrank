@@ -1,1 +1,1 @@
-Regex_Pattern = r'^(Mr|Mrs|Ms|Dr|Er)\.[a-Z]+$'
+Regex_Pattern = r'^(Mr|Mrs|Ms|Dr|Er)\.[a-zA-Z]+$'

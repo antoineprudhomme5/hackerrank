@@ -1,20 +1,16 @@
 object Solution {
 
     def main(args: Array[String]) {
-        var s :List[Char] = scala.io.StdIn.readLine().toList
-        print(reduce(s))
+        val s :String = scala.io.StdIn.readLine()
+        print(reduce(s, Set[Char](), 0))
     }
 
-    def reduce(s: List[Char]) :String = {
-        if (s.length > 0) {
-            // get and remove the last char
-            val last :Char = s.last
-            var newS :List[Char] = s.dropRight(1)
-            // use the char only if it's not in s
-            if (newS.indexOf(last) > -1) {
-                return reduce(newS)
+    def reduce(s: String, used: Set[Char], i: Int) :String = {
+        if (i < s.length) {
+            if (used.contains(s(i))) {
+                return reduce(s, used, i+1)
             }
-            return reduce(newS) + last
+            return s(i) + reduce(s,used + s(i) , i+1)
         }
         return ""
     }

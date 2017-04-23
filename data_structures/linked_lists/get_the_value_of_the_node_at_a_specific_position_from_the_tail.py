@@ -9,4 +9,4 @@ def GetNode(head, position):
         l.append(p.data)
         p = p.next
     
-    print(l[len(l) - 1 - position]) 
+    return l[len(l) - 1 - position]

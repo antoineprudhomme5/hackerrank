@@ -4,29 +4,33 @@ defmodule Solution do
             |> String.to_integer
     end
 
+    def print_unicode_list(l) do
+        Enum.map(l, fn x -> <<x :: utf8>> end)
+            |> Enum.reduce(fn(x, acc) -> x <> acc end)
+            |> IO.puts
+    end
+
     def read_strings(n) when n > 0 do
         String.trim(IO.gets "")
             |> String.to_charlist
             |> Enum.to_list
             |> permute
-            |> IO.puts
+            |> print_unicode_list
 
         read_strings(n - 1)
     end
 
     def permute(l) when length(l) == 1 do
-        [head | _] = l
-        head
+        [List.first(l)]
     end
     def permute(l) when length(l) == 2 do
-        [a | tail_1] = l
-        [b | _] = tail_1
-        b <> a
+        [List.last(l), List.first(l)]
     end
     def permute(l) do
-        [a | tail_1] = l
-        [b | tail_2] = tail_1
-        b <> a <> permute(tail_2)
+        splitted = Enum.split(l, 2)
+        a = List.first(elem(splitted, 0))
+        b = List.last(elem(splitted, 0))
+        [b, a] permute(elem(splitted, 1))
     end
 end
 

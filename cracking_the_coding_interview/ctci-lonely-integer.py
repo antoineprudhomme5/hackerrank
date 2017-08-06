@@ -3,7 +3,7 @@
 def lonely_integer(a):
     v = 0
     for i in a:
-        v ^= a
+        v ^= i
     return v
 
 n = int(input().strip())

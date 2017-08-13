@@ -1,7 +1,7 @@
 def list_to_hashtable(a):
     h = {}
     for w in a:
-        if c in h:
+        if w in h:
             h[w] += 1
         else:
             h[w] = 1

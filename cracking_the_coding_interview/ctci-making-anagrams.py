@@ -1,6 +1,6 @@
 import math
 
-def string_to_hashtable(a):
+def list_to_hashtable(a):
     h = {}
     for c in a:
         if c in h:
@@ -10,8 +10,8 @@ def string_to_hashtable(a):
     return h
 
 def number_needed(a, b):
-    h_a = string_to_hashtable(a)
-    h_b = string_to_hashtable(b)
+    h_a = list_to_hashtable(a)
+    h_b = list_to_hashtable(b)
     counter = 0
 
     for c in h_a:

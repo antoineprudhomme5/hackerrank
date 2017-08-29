@@ -1,4 +1,4 @@
-class MinHeap:
+class BaseHeap:
     def __init__(self):
         self.values = []
 
@@ -18,10 +18,25 @@ class MinHeap:
         self.values.append(value)
         self.heapify_up()
 
+    # return the value of the root (the min value of the tree)
+    def peek(self):
+        return self.values[0]
+
+    # remove and return the root of the tree
+    # after removing, reheapify the tree
+    def pull(self):
+        root = self.values[0]
+        self.values[0] = self.values.pop()
+        self.heapify_down()
+        return root
+
     def swap(self, i, j):
         temp = self.values[i]
         self.values[i] = self.values[j]
         self.values[j] = temp
+
+
+class MinHeap(BaseHeap):
 
     # up in the tree the lastest inserted value while lower than his parent
     def heapify_up(self):
@@ -50,45 +65,8 @@ class MinHeap:
             i = smallest_child
             left_child = self.left_child(i)
 
-    # return the value of the root (the min value of the tree)
-    def peek(self):
-        return self.values[0]
 
-    # remove and return the root of the tree
-    # after removing, reheapify the tree
-    def pull(self):
-        root = self.values[0]
-        self.values[0] = self.values.pop()
-        self.heapify_down()
-        return root
-
-    def show(self):
-        print(self.values)
-
-class MaxHeap:
-    def __init__(self):
-        self.values = []
-
-    def size(self):
-        return len(self.values)
-
-    def parent(self, i):
-        return (i-1)//2
-
-    def left_child(self, i):
-        return i*2 + 1
-
-    def right_child(self, i):
-        return i*2 + 2
-
-    def insert(self, value):
-        self.values.append(value)
-        self.heapify_up()
-
-    def swap(self, i, j):
-        temp = self.values[i]
-        self.values[i] = self.values[j]
-        self.values[j] = temp
+class MaxHeap(BaseHeap):
 
     # up in the tree the lastest inserted value while greater than his parent
     def heapify_up(self):
@@ -115,21 +93,6 @@ class MaxHeap:
             self.swap(i, biggest_child)
             i = biggest_child
             left_child = self.left_child(i)
-
-    # return the value of the root (the min value of the tree)
-    def peek(self):
-        return self.values[0]
-
-    # remove and return the root of the tree
-    # after removing, reheapify the tree
-    def pull(self):
-        root = self.values[0]
-        self.values[0] = self.values.pop()
-        self.heapify_down()
-        return root
-
-    def show(self):
-        print(self.values)
 
 # create the 2 heaps
 higher = MinHeap()

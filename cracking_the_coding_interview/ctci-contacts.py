@@ -1,8 +1,8 @@
 class Node:
 
-    def __init__(self, is_name = False):
+    def __init__(self):
         self.letters = {}
-        self.is_name = is_name
+        self.uses = 0
 
 class ContactList:
 
@@ -12,63 +12,47 @@ class ContactList:
     """
         Insert a new contact name in the tree of contacts
     """
-    def insert_contact(self, name, l = None):
+    def insert_contact(self, name, l = None, i = 0):
         if not l:
             l = self.root
 
         # if name is empty, quit
-        if not name:
+        if i >= len(name):
             return
 
         # insert letter by letter.
         # if the next letter is not in the letters of this node,
         # add the letter
-        if name[0] not in l.letters:
-            # if this is the last letter, remember that this node is the end of a word
-            l.letters[name[0]] = Node(len(name) == 1)
+        if name[i] not in l.letters:
+            # if this is the last letter
+            l.letters[name[i]] = Node()
+        # increment the uses of this node
+        l.letters[name[i]].uses += 1
 
         # call recursively this method to insert fully the contact name
         # with the rest of the name
-        return self.insert_contact(name[1:], l.letters[name[0]])
+        return self.insert_contact(name, l.letters[name[i]], i+1)
 
 
     """
-        Count the number of name in the contact list that begin
-        with the 'partial' string
+        Down the tree following the partial string
+        and return the number of uses of this node
     """
     def count_contact(self, partial):
         if not partial:
             return
 
-        subtree = self.root
-        # go down the tree until we reach the node that corespond to the 'partial'
-        while len(partial):
-            if partial[0] not in subtree.letters:
+        node = self.root
+        i = 0
+        while i < len(partial):
+            if partial[i] not in node.letters:
                 # the partial match 0 contact
                 return 0
 
-            subtree = subtree.letters[partial[0]]
-            partial = partial[1:]
+            node = node.letters[partial[i]]
+            i += 1
 
-        # count recursively the number of name in this subtree
-        return self.count_contact_recursive_part(subtree)
-
-    """
-        Count the number of Node where the 'is_name' attribute
-        is True in the given tree
-    """
-    def count_contact_recursive_part(self, tree):
-        count = 0
-
-        if tree.is_name:
-            count += 1
-
-        letters = tree.letters.keys()
-        if len(letters):
-            for letter in letters:
-                count += self.count_contact_recursive_part(tree.letters[letter])
-
-        return count
+        return node.uses
 
 
 # create the contact list

@@ -26,19 +26,26 @@ class Graph:
         for i in range(self.size):
             distances[i+1] = -1
         distances.pop(s, None)
+
         # do BFS starting from the given node
-        q = queue.Queue()
-        q.put(s)
+        currQueue = queue.Queue() # nodes of the current level
+        nextQueue = queue.Queue() # nodes of the next level
+        currQueue.put(s)
         self.nodes[s].visited = True
-        level = 1
-        while not q.empty():
-            curr = self.nodes[q.get()]
+        level = 0
+        while not currQueue.empty() or not nextQueue.empty():
+            if currQueue.empty():
+                level += 1;
+                currQueue = nextQueue
+                nextQueue = queue.Queue()
+
+            curr = self.nodes[currQueue.get()]
             if curr.index in distances:
                 distances[curr.index] = 6 * level
             # enqueue neighbors that are not already visited
             for neighbor in curr.neighbors:
                 if not self.nodes[neighbor].visited:
-                    q.put(self.nodes[neighbor].index)
+                    nextQueue.put(self.nodes[neighbor].index)
                     self.nodes[neighbor].visited = True
 
         # return distances

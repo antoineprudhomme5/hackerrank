@@ -7,13 +7,9 @@ def prime_factorization(n, primes = []):
         return primes
 
     i = 2
-    flag = False
-    while not flag:
-        if n % i == 0:
-            flag = True
-            primes.append(i)
-        else:
+    while not n % i == 0:
             i +=1
+    primes.append(i)
 
     return prime_factorization(n // i, primes)
 

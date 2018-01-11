@@ -1,18 +1,22 @@
 n = int(input())
 p = list(map(int, input().split()))
 
+# all prices are distinct
+# remember the original pos of each price in the list
+# because the order is important
+dic = {}
+for i, v in enumerate(p):
+    dic[v] = i
+# sort the prices => the diff between each pair is the min loss
+p = sorted(p)
+
 min_loss = float('+Inf')
 
-for i in range(n-2, -1, -1):
-    # search the biggest value lower or equal than the current value
-    for j in range(i+1, n):
-        if p[i] >= p[j]:
-            min_loss = min(min_loss, p[i]-p[j])
-            break
-    # keep the tail of the list sorted
-    current = i
-    while current < n-1 and p[current] < p[current+1]:
-        p[current], p[current+1] = p[current+1], p[current]
-        current += 1
+# loop through each pair
+for i in range(n-1):
+    # check if the pair has a loss lower than the current min loss
+    # and that the pair respects the original order
+    if p[i+1] - p[i] < min_loss and dic[p[i+1]] < dic[p[i]]:
+        min_loss = p[i+1] - p[i]
 
 print(min_loss)

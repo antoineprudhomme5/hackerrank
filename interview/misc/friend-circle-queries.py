@@ -1,31 +1,55 @@
+def get_root(parents, v):
+  root = v
+  while root in parents:
+    root = parents.get(root)
+  return root
+
 def max_circle(queries):
   answers = []
-  next_group_id = 0
-  id_to_group_map = {}
-  group_to_ids_map = {}
+  parents = {}
+  sizes = {}
   current_max_size = 1
 
   for query in queries:
     a, b = query[0], query[1]
-    grp_a, grp_b = id_to_group_map.get(a), id_to_group_map.get(b)
-    if (grp_a and grp_b) and grp_a == grp_b:
-      continue
+    root_a, root_b = get_root(parents, a), get_root(parents, b)
 
-    members_grp_a = group_to_ids_map.get(grp_a) if group_to_ids_map.get(grp_a) else {a}
-    members_grp_b = group_to_ids_map.get(grp_b) if group_to_ids_map.get(grp_b) else {b}
-    members_new_grp = members_grp_a.union(members_grp_b)
+    size_a = sizes.get(root_a) if root_a in sizes else 1
+    size_b = sizes.get(root_b) if root_b in sizes else 1
 
-    current_max_size = max(len(members_new_grp), current_max_size)
+
+    parents[root_a] = root_b
+
+    sizes[root_b] = size_a + size_b
+
+    current_max_size = max(size_a + size_b, current_max_size)
+
     answers.append(current_max_size)
-
-    for el in members_new_grp:
-      id_to_group_map[el] = next_group_id
-    
-    group_to_ids_map[next_group_id] = members_new_grp
-
-    next_group_id = next_group_id + 1
 
   return answers
 
+max_circle([[1, 2], [3, 4], [1, 3], [5, 7], [5, 6], [7, 4]])
+# max_circle([[1, 2], [3, 4], [1, 3]])
 
-# max_circle([[1, 2], [3, 4], [1, 3], [5, 7], [5, 6], [7, 4]])
+"""
+8
+6 4
+5 9
+8 5
+4 1
+1 5
+7 2
+4 2
+7 6
+"""
+
+"""
+2
+2
+3
+3
+6
+6
+8
+8
+"""

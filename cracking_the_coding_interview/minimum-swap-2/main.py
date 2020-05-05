@@ -1,26 +1,21 @@
-def find_next_misplaced_index(arr):
-    for i, v in enumerate(arr):
-        if (v-1) != i:
-            return i
-    return None
-
-# fail last test case because timeout
-# find_next_misplaced_index go through arr too many times ?
-
-
 def minimum_swaps(arr):
+    positions = [0] * (len(arr) + 1)
+    for i, v in enumerate(arr):
+        positions[v] = i
+
     nb_swaps = 0
+    for i in range(len(arr)):
+        pos_of_val_that_should_be_at_i = positions[i+1]
+        if pos_of_val_that_should_be_at_i != i:
+            v1 = arr[i]
+            v2 = arr[pos_of_val_that_should_be_at_i]
 
-    misplaced_index = find_next_misplaced_index(arr)
-    while misplaced_index != None:
-        v_misplaced = arr[misplaced_index]
-        v_to_swap_with = arr[v_misplaced - 1]
+            arr[i] = v2
+            arr[pos_of_val_that_should_be_at_i] = v1
 
-        arr[misplaced_index] = v_to_swap_with
-        arr[v_misplaced - 1] = v_misplaced
+            positions[v1] = pos_of_val_that_should_be_at_i
+            positions[v2] = i
 
-        nb_swaps = nb_swaps + 1
-        misplaced_index = find_next_misplaced_index(
-            arr) if v_to_swap_with - 1 == misplaced_index else v_to_swap_with - 1
+            nb_swaps = nb_swaps + 1
 
     return nb_swaps
